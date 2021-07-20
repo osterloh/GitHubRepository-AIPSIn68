@@ -29,6 +29,7 @@ interface Issue {
   html_url: string;
   user: {
     login: string;
+    avatar_url: string;
   };
 }
 
@@ -58,45 +59,46 @@ const Repository: React.FC = () => {
         </Link>
       </Header>
 
-      <RepositoryInfo>
-        <header>
-          <img
-            src="https://avatars.githubusercontent.com/u/69631?s=200&v=4"
-            alt="Facebook"
-          />
-          <div>
-            <strong>Facebook</strong>
-            <p>Repositório do ReactJS no GitHub do Facebook</p>
-          </div>
-        </header>
-        <ul>
-          <li>
-            <strong>172K</strong>
-            <span>Stars</span>
-          </li>
-          <li>
-            <strong>34K</strong>
-            <span>Forks</span>
-          </li>
-          <li>
-            <strong>574</strong>
-            <span>Issues abertas</span>
-          </li>
-        </ul>
-      </RepositoryInfo>
+      {repository && (
+        <RepositoryInfo>
+          <header>
+            <img
+              src={repository.owner.avatar_url}
+              alt={repository.owner.login}
+            />
+            <div>
+              <strong>{repository.full_name}</strong>
+              <p>{repository.description}</p>
+            </div>
+          </header>
+          <ul>
+            <li>
+              <strong>{repository.stargazers_count}</strong>
+              <span>Stars</span>
+            </li>
+            <li>
+              <strong>{repository.forks_count}</strong>
+              <span>Forks</span>
+            </li>
+            <li>
+              <strong>{repository.open_issues_count}</strong>
+              <span>Issues abertas</span>
+            </li>
+          </ul>
+        </RepositoryInfo>
+      )}
 
       <Issues>
-        <Link to={`teste`}>
-          <img
-            src="https://avatars.githubusercontent.com/u/46034178?v=4"
-            alt="Johnatan"
-          />
-          <div>
-            <strong>Facebook</strong>
-            <p>Descrição do repositório</p>
-          </div>
-          <FiChevronRight size={20} />
-        </Link>
+        {issues.map((issue) => (
+          <a key={issue.id} href={issue.html_url} target="blanck">
+            <img src={issue.user.avatar_url} alt={issue.user.login} />
+            <div>
+              <strong>{issue.title}</strong>
+              <p>{issue.user.login}</p>
+            </div>
+            <FiChevronRight size={20} />
+          </a>
+        ))}
       </Issues>
     </>
   );
